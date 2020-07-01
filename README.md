@@ -5,7 +5,7 @@
 
 This cookbook will walk you through the process of installing **Anypoint Service Mesh** on **Microsoft Azure Red Hat OpenShift**. You will deploy a demo application and secure using Anypoint Service Mesh.
 
-***To log issues***, click here to go to the [github](https://github.com/mulesoft-consulting/ASMonAzure/issues) repository issue submission form.
+***To log issues***, click here to go to the [github](https://github.com/mulesoft-consulting/ASMonAzureRedHatOpenShift/issues) repository issue submission form.
 
 ## Objectives
 
@@ -155,8 +155,8 @@ oc login $apiServer -u <login> -p <password>
 <a id="installistio"></a>
 ## Install Istio
 
-<a id="step4"></a>
-### **STEP 4**: Download and Install Istio CLI
+<a id="step8"></a>
+### **STEP 8**: Download and Install Istio CLI
 
 - To install **Istio** we will be using the **Istio CLI**. For completed instructions [Istio Docs](https://istio.io/docs/setup/install/istioctl/)
 
@@ -182,8 +182,8 @@ export PATH=$PWD/bin:$PATH
 
 ![](images/imageXX.png)
 
-<a id="step5"></a>
-### **STEP 5**: Install Istio using CLI
+<a id="step9"></a>
+### **STEP 9**: Install Istio using CLI
 - To install **Istio** we will be using the **Istio CLI**.
 
 - For **Istio 1.4.x**, from the **istio** directory run the following command
@@ -238,8 +238,8 @@ kubectl get namespaces
 <a id="deploydemo"></a>
 ## Deploy Demo Application
 
-<a id="step6"></a>
-### **STEP 6**: Clone Demo Application
+<a id="step10"></a>
+### **STEP 10**: Clone Demo Application
 
 - For our demo application will will be using **Northern Trail Outfitters** shopping cart application. This web based UI will call several services to complete the order.
 
@@ -258,8 +258,8 @@ ls
 
 ![](images/imageXX.png)
 
-<a id="step7"></a>
-### **STEP 7**: Deploy Demo Application
+<a id="step11"></a>
+### **STEP 11**: Deploy Demo Application
 
 - We will now deploy the demo application to your kubernetes cluster. The deployment script takes the namespace as a parameter. We will be using **nto-payment** for namespace
 
@@ -304,8 +304,8 @@ http://<EXTERNAL-IP>:3000
 <a id="installasm"></a>
 ## Install Anypoint Service Mesh
 
-<a id="step8"></a>
-### **STEP 8**: Install Anypoint Service Mesh
+<a id="step12"></a>
+### **STEP 12**: Install Anypoint Service Mesh
 
 For complete instructions and documentation please visit [MuleSoft Docs](https://docs.mulesoft.com/service-mesh/latest/)
 
@@ -348,8 +348,8 @@ kubectl get pods -n service-mesh
 
 ![](images/image29.png)
 
-<a id="step9"></a>
-### **STEP 9**: Install Anypoint Service Mesh Adapter
+<a id="step13"></a>
+### **STEP 13**: Install Anypoint Service Mesh Adapter
 
 - Next we want to deploy the Anypoint Service Mesh adapter in each namespace that we want to monitor APIs. For this example we will just be doing the **nto-payment** namespace that contains the demo application.
 
@@ -418,8 +418,8 @@ asmctl management check sidecar --namespace=nto-payment
 
 ![](images/imageXX.png)
 
-<a id="step10"></a>
-### **STEP 10**: Create APIs
+<a id="step14"></a>
+### **STEP 14**: Create APIs
 
 - We will now use Anypoint Service Mesh auto discovery to create API's in Anypoint Platform. We will create API's for Customer, Inventory, Order and Payments services that are used by the demo application.
 
@@ -446,7 +446,7 @@ If you are not familiar with how to get environment Client Id and Secret, naviga
 kubectl apply -f demo-apis.yaml
 ```
 
-![](images/image33.png)
+![](images/imageXX.png)
 
 - Use the following command to monitor the progress. Wait for status to change to **Ready**
 
@@ -460,8 +460,8 @@ asmctl api list
 
     ![](images/imageXX.png)
 
-<a id="step11"></a>
-### **STEP 11**: Binding APIs with Services
+<a id="step15"></a>
+### **STEP 15**: Binding APIs with Services
 
 - The last step is to bind the Kubernetes Services with the Anypoint Platform API's. To do this you will use the binding definition file **demo-bind-apis.yaml**. Execute the following command
 
@@ -489,8 +489,8 @@ asmctl api binding list
 <a id="applypolicy"></a>
 ## Apply API Management Policies
 
-<a id="step12"></a>
-### **STEP 12**: Apply Rate Limiting Policy to Customer API
+<a id="step16"></a>
+### **STEP 16**: Apply Rate Limiting Policy to Customer API
 
 - From the **API Management** Screen in Anypoint Platform click on the version number for **customer-api**
 
@@ -510,12 +510,12 @@ asmctl api binding list
 
 - To test this out run through the order process in the demo application. Try to run through it 2 times within a minute. The second time through you will get **Account Retrieval Failed** error.
 
-    ![](images/image43.png)
+    ![](images/imageXX.png)
 
 - Before moving onto the next step remove the **Rate Limiting** policy.
 
-<a id="step13"></a>
-### **STEP 13**: Apply Client ID enforcement Policy to Payment API
+<a id="step17"></a>
+### **STEP 17**: Apply Client ID enforcement Policy to Payment API
 
 - Navigate back to the ***API Administration** page. Click on the version number for **payment-api**.
 
@@ -539,8 +539,8 @@ asmctl api binding list
 <a id="reportmonitoranalytics"></a>
 ## Report & Monitor API Analytics
 
-<a id="step14"></a>
-### **STEP 14**: View Analytics Reports Dashboards of Customer API & Payment API
+<a id="step18"></a>
+### **STEP 18**: View Analytics Reports Dashboards of Customer API & Payment API
 
 - From **API Manager**, click on **Analytics** on the left.
 
@@ -560,8 +560,8 @@ Follow [MuleSoft API Analytics Documentation](https://docs.mulesoft.com/api-mana
 ![](images/imageXX.png)
 [Violated Policy Name.csv](Violated%20Policy%20Name.csv)
 
-<a id="step15"></a>
-### **STEP 15**: View Dashboards of Customer API & Payment API
+<a id="step19"></a>
+### **STEP 19**: View Dashboards of Customer API & Payment API
 - Navigate to the **Anypoint Monitoring** from either Anypoint Platform home page, or the hamburger menu at the top left corner.
 
 - You can click on **Built-in dashboards** on the left to check out what's populated for the Customer & Payment APIs. In the drop-down, choose the **environment**, **resource name**, and the **API version / Instance**, and click on **View**. 
@@ -582,8 +582,8 @@ Follow [MuleSoft API Analytics Documentation](https://docs.mulesoft.com/api-mana
 <a id="cleanup"></a>
 ## Cleanup (Optional)
 
-<a id="step16"></a>
-### **STEP 16**: Cleanup APIs and API Bindings
+<a id="step20"></a>
+### **STEP 20**: Cleanup APIs and API Bindings
 
 - Use the following command to list the API Bindings:
 
