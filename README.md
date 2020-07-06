@@ -176,7 +176,7 @@ kubectl config current-context
 curl -L https://istio.io/downloadIstio | ISTIO_VERSION=<x.x.x> sh -
 ```
 
-![](images/imageXX.png)
+![](images/image12.png)
 
 - Change into newly downloaded directory (the Istio version downloaded and to be installed)
 
@@ -190,7 +190,7 @@ cd istio-<x.x.x>/
 export PATH=$PWD/bin:$PATH
 ```
 
-![](images/imageXX.png)
+![](images/image13.png)
 
 <a id="step9"></a>
 ### **STEP 9**: Install Istio using CLI
@@ -233,9 +233,18 @@ spec:
         enabled: false
 ```
 
+By default, OpenShift doesn’t allow containers running with user ID 0. You must enable containers running with UID 0 for Istio’s service accounts by running the command below.
+
 ```bash
-istioctl manifest apply -f istio-manifest.yaml
+oc adm policy add-scc-to-group anyuid system:serviceaccounts:istio-system
 ```
+
+![](images/image14.png)
+
+```bash
+istioctl manifest apply -f istio-manifest.yaml --set components.cni.namespace=kube-system --set values.cni.cniBinDir=/var/lib/cni/bin --set values.cni.cniConfDir=/etc/cni/multus/net.d --set values.cni.chained=false --set values.cni.cniConfFileName="istio-cni.conf" --set values.sidecarInjectorWebhook.injectedAnnotations."k8s\.v1\.cni\.cncf\.io/networks"=istio-cni
+```
+![](images/image15.png)
 
 - Verify that **Istio** has been installed. You should now see the **istio-system** namespace
 
@@ -243,7 +252,7 @@ istioctl manifest apply -f istio-manifest.yaml
 kubectl get namespaces
 ```
 
-![](images/imageXX.png)
+![](images/image16.png)
 
 <a id="deploydemo"></a>
 ## Deploy Demo Application
@@ -266,7 +275,7 @@ cd ServiceMeshDemo/
 ls
 ```
 
-![](images/imageXX.png)
+![](images/image17.png)
 
 <a id="step11"></a>
 ### **STEP 11**: Deploy Demo Application
@@ -277,7 +286,11 @@ ls
 ./deployAll.sh nto-payment
 ```
 
-![](images/imageXX.png)
+![](images/image18.png)
+
+- The Istio sidecar injected into each application pod runs with user ID 1337, which is not allowed by default in OpenShift. To allow this user ID to be used, execute the following commands for the **nto-payment** namespace. 
+
+![](images/image19.png)
 
 - You can monitor the deployment with the following commands
 
@@ -286,7 +299,7 @@ kubectl get pods -n nto-payment
 kubectl get services -n nto-payment
 ```
 
-![](images/imageXX.png)
+![](images/image20.png)
 
 - Once all services are running you can test out the application. To access the application open you browser and go to the following URL
 
