@@ -59,7 +59,7 @@ For complete instructions please visit [MuleSoft Documentation](https://docs.mul
 ```bash
 az group create --name aro-rg-westus --location westus
 ```
-	![](images/image1.png)	
+  ![](images/image1.png)	
 
 <a id="step2"></a>
 ### **STEP 2**: Create Azure Virtual Network
@@ -68,7 +68,8 @@ az group create --name aro-rg-westus --location westus
 ```bash
 az network vnet create --resource-group aro-rg-westus --name aro-vnet --address-prefixes 10.0.0.0/22
 ```
-	![](images/image2.png)	
+  ![](images/image2.png)	
+  
 <a id="step3"></a>
 ### **STEP 3**: Add an empty Azure Subnet for Master Nodes
 
@@ -81,7 +82,7 @@ az network vnet subnet create \
 --address-prefixes 10.0.0.0/23 \
 --service-endpoints Microsoft.ContainerRegistry
 ```
-	![](images/image3.png)	
+  ![](images/image3.png)	
 
 
 <a id="step4"></a>
@@ -96,7 +97,7 @@ az network vnet subnet create \
 --address-prefixes 10.0.2.0/23 \
 --service-endpoints Microsoft.ContainerRegistry
 ```
-	![](images/image4.png)	
+  ![](images/image4.png)	
 
 <a id="step5"></a>
 ### **STEP 5**: Disable Azure Subnet Private Endpoints for Master Subnet
@@ -109,7 +110,7 @@ az network vnet subnet update \
 --vnet-name aro-vnet \
 --disable-private-link-service-network-policies true
 ```
-	![](images/image5.png)	
+  ![](images/image5.png)	
 
 <a id="step6"></a>
 ### **STEP 6**: Create Cluster
@@ -124,7 +125,7 @@ az aro create \
 --worker-subnet worker-subnet \
 --pull-secret @pull-secret.txt
 ```
-	![](images/image6.png)	
+  ![](images/image6.png)	
 
 <a id="step7"></a>
 ### **STEP 7**: Verify Cluster and Connect
@@ -135,7 +136,7 @@ az aro list-credentials \
 --name aro-cluster \
 --resource-group aro-rg-westus
 ```
-	![](images/image7.png)	
+  ![](images/image7.png)	
 
 ```bash
 az aro show \
@@ -144,9 +145,8 @@ az aro show \
 --query "consoleProfile.url" -o tsv
 ```
 Log in to the web admin console.
-	![](images/image8.png)
-
-	![](images/image9.png)
+  ![](images/image8.png)
+  ![](images/image9.png)
 	
 Connect via the CLI:
 ```bash
@@ -154,12 +154,13 @@ apiServer=$(az aro show -g aro-rg-westus -n aro-cluster --query apiserverProfile
 
 oc login $apiServer -u <login> -p <password>
 ```
-	![](images/image10.png)
+  ![](images/image10.png)
 
 Verify the current Kubenetes context has been configured to point to the ARO cluster.
 ```bash
 kubectl config current-context
-```	![](images/image11.png)
+```
+  ![](images/image11.png)
 
 <a id="installistio"></a>
 ## Install Istio
