@@ -306,7 +306,6 @@ oc create -f nto-deployment.yaml
 oc adm policy add-scc-to-group privileged system:serviceaccounts:nto-payment
 
 oc adm policy add-scc-to-group anyuid system:serviceaccounts:nto-payment
-securitycontextconstraints.security.openshift.io/anyuid added to 
 ```
 
 ![](images/image19.png)
@@ -364,10 +363,10 @@ For complete instructions and documentation please visit [MuleSoft Docs](https:/
 - First lets enable API Analytics by setting the **disableMixerHttpReports** flag to false:
 
 ```bash
-kubectl -n istio-system get cm istio -o yaml | sed -e 's/disableMixerHttpReports: true/disableMixerHttpReports: false/g' | kubectl replace -f -
+oc -n istio-system get cm istio -o yaml | sed -e 's/disableMixerHttpReports: true/disableMixerHttpReports: false/g' | oc replace -f -
 ```
 
-![](images/imageXX.png)
+![](images/image24.png)
 
 - Download the latest Anypoint Service Mesh CLI and make it executable
 
