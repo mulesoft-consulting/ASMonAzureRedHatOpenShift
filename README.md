@@ -233,7 +233,7 @@ spec:
         enabled: false
 ```
 
-By default, OpenShift doesn’t allow containers running with user ID 0. You must enable containers running with UID 0 for Istio’s service accounts by running the command below.
+- By default, OpenShift doesn’t allow containers running with user ID 0. You must enable containers running with UID 0 for Istio’s service accounts by running the command below.
 
 ```bash
 oc adm policy add-scc-to-group anyuid system:serviceaccounts:istio-system
@@ -241,10 +241,20 @@ oc adm policy add-scc-to-group anyuid system:serviceaccounts:istio-system
 
 ![](images/image14.png)
 
+
+- Install CNI using Hosted Kubernetes Settings for OpenShift & Helm Chart parameters:
+
 ```bash
 istioctl manifest apply -f istio-manifest.yaml --set components.cni.namespace=kube-system --set values.cni.cniBinDir=/var/lib/cni/bin --set values.cni.cniConfDir=/etc/cni/multus/net.d --set values.cni.chained=false --set values.cni.cniConfFileName="istio-cni.conf" --set values.sidecarInjectorWebhook.injectedAnnotations."k8s\.v1\.cni\.cncf\.io/networks"=istio-cni
 ```
 ![](images/image15.png)
+
+- After the installation is complete, expose an OpenShift route for the ingress gateway
+
+```bash
+oc -n istio-system expose svc/istio-ingressgateway --port=http2
+```
+![](images/image15b.png)
 
 - Verify that **Istio** has been installed. You should now see the **istio-system** namespace
 
@@ -283,20 +293,41 @@ ls
 - We will now deploy the demo application to your kubernetes cluster. The deployment script takes the namespace as a parameter. We will be using **nto-payment** for namespace
 
 ```bash
-./deployAll.sh nto-payment
+oc create namespace nto-payment
+oc label ns nto-payment istio-injection=enabled
+oc create -f nto-deployment.yaml
 ```
 
 ![](images/image18.png)
 
 - The Istio sidecar injected into each application pod runs with user ID 1337, which is not allowed by default in OpenShift. To allow this user ID to be used, execute the following commands for the **nto-payment** namespace. 
 
+```bash
+oc adm policy add-scc-to-group privileged system:serviceaccounts:nto-payment
+
+oc adm policy add-scc-to-group anyuid system:serviceaccounts:nto-payment
+securitycontextconstraints.security.openshift.io/anyuid added to 
+```
+
 ![](images/image19.png)
+
+- CNI on OpenShift is managed by Multus, and it requires a NetworkAttachmentDefinition to be present in the application namespace in order to invoke the istio-cni plugin.
+
+```bash
+cat <<EOF | oc -n nto-payment create -f -
+apiVersion: "k8s.cni.cncf.io/v1"
+kind: NetworkAttachmentDefinition
+metadata:
+  name: istio-cni
+EOF
+```
+![](images/image19b.png)
 
 - You can monitor the deployment with the following commands
 
 ```bash
-kubectl get pods -n nto-payment
-kubectl get services -n nto-payment
+oc get pods -n nto-payment
+oc services -n nto-payment
 ```
 
 ![](images/image20.png)
@@ -307,9 +338,7 @@ kubectl get services -n nto-payment
 http://<EXTERNAL-IP>:3000
 ```
 
-![](images/imageXX.png)
-
-![](images/imageXX.png)
+![](images/image21.png)
 
 - To test out the application follow these steps:
 
@@ -320,9 +349,9 @@ http://<EXTERNAL-IP>:3000
     - Click **AUTHORIZE PAYMENT**
     - Last click **PLACE ORDER**
 
-![](images/imageXX.png)
+![](images/image22.png)
 
-![](images/imageXX.png)
+![](images/image23.png)
 
 <a id="installasm"></a>
 ## Install Anypoint Service Mesh
