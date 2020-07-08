@@ -1,9 +1,11 @@
-# ASMonAzureRedHatOpenShift
+# ASMonAzureRedHatOpenShift [WIP]
 ![](images/title.png)
 
 ## Introduction
 
 This cookbook will walk you through the process of installing **Anypoint Service Mesh** on **Microsoft Azure Red Hat OpenShift**. You will deploy a demo application and secure using Anypoint Service Mesh.
+
+***Note that ASM is not officially supported on OpenShift yet. This is for internal testing & knowledge sharing ONLY for now.***
 
 ***To log issues***, click here to go to the [github](https://github.com/mulesoft-consulting/ASMonAzureRedHatOpenShift/issues) repository issue submission form.
 
@@ -326,7 +328,7 @@ EOF
 
 ```bash
 oc get pods -n nto-payment
-oc services -n nto-payment
+oc get services -n nto-payment
 ```
 
 ![](images/image20.png)
@@ -381,9 +383,9 @@ mkdir -p $HOME/.asm && curl -Ls http://anypoint.mulesoft.com/servicemesh/xapi/v1
 
 - If you are not familiar with how to get environment Client Id and Secret, navigate to **API Manager** and click on the **Environment Information** button.
 
-![](images/imageXX.png)
+![](images/image-env-info1.png)
 
-![](images/imageXX.png)
+![](images/image-env-info2.png)
 
 ```bash
 asmctl install
