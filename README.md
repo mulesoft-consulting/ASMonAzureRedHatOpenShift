@@ -297,7 +297,7 @@ ls
 ```bash
 oc create namespace nto-payment
 oc label ns nto-payment istio-injection=enabled
-oc create -f nto-deployment.yaml
+oc create -f nto-deployment.yaml -n nto-payment
 ```
 
 ![](images/image18.png)
