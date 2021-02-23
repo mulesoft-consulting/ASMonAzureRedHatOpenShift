@@ -147,9 +147,15 @@ az aro show \
 --query "consoleProfile.url" -o tsv
 ```
 Log in to the web admin console.
+  
   ![](images/image8.png)
   ![](images/image9.png)
-	
+
+At the top right corner, click on the question-mark circle, CommandLine Tools, and download the appropriate oc - OpenShift Command Line Interce (CLI). The ***oc*** tool is just the OpenShift version of ***kubectl***, with additional CLI options specifically for OpenShift.
+  
+  ![](images/oc-tool.png)
+
+
 Connect via the CLI:
 ```bash
 apiServer=$(az aro show -g aro-rg-westus -n aro-cluster --query apiserverProfile.url -o tsv)
