@@ -3,9 +3,9 @@
 
 ## Introduction
 
-This cookbook will walk you through the process of installing **Anypoint Service Mesh** on **Microsoft Azure Red Hat OpenShift**. You will deploy a demo application and secure using Anypoint Service Mesh.
+Official **OpenShift** support has been added to **Anypoint Service Mesh v1.2**!
 
-***Note that ASM is not officially supported on OpenShift yet. This is for internal testing & knowledge sharing ONLY for now.***
+This cookbook will walk you through the process of installing **Anypoint Service Mesh** on **Microsoft Azure Red Hat OpenShift**. You will deploy a demo application and secure using Anypoint Service Mesh.
 
 ***To log issues***, click here to go to the [github](https://github.com/mulesoft-consulting/ASMonAzureRedHatOpenShift/issues) repository issue submission form.
 
@@ -160,7 +160,7 @@ oc login $apiServer -u <login> -p <password>
 
 Verify the current Kubenetes context has been configured to point to the ARO cluster.
 ```bash
-kubectl config current-context
+oc config current-context
 ```
   ![](images/image11.png)
 
@@ -224,7 +224,7 @@ oc -n istio-system expose svc/istio-ingressgateway --port=http2
 - Verify that **Istio** has been installed. You should now see the **istio-system** namespace
 
 ```bash
-kubectl get namespaces
+oc get namespaces
 ```
 
 ![](images/image16.png)
@@ -359,7 +359,7 @@ asmctl install
 - Verify that Anypoint Service Mesh has been installed correctly with the following command
 
 ```bash
-kubectl get pods -n service-mesh
+oc get pods -n service-mesh
 ```
 
 ![](images/image29.png)
@@ -376,7 +376,7 @@ kubectl get pods -n service-mesh
 - Replace **```<CLIENT ID>```** and **```<CLIENT SECRET>```** with values for your environment. Save file and run the following command
 
 ```bash
-kubectl apply -f nto-payment-asm-adapter.yaml
+oc apply -f nto-payment-asm-adapter.yaml
 ```
 
 ![](images/imageXX.png)
@@ -392,37 +392,37 @@ asmctl adapter list
 - After you provision the adapter, you must set the `istio-injection=enabled` label on the namespace by runnning the following command
 
 ```bash
-kubectl label ns nto-payment istio-injection=enabled
+oc label ns nto-payment istio-injection=enabled
 ```
 
 - Redeploy all the existing applications in the namepsace. See Step 6.2 in [MuleSoft Docs](https://docs.mulesoft.com/service-mesh/1.0/provision-adapter-configure-service-mesh-CLI)
 
 ```bash
-kubectl get deployments -n nto-payment
+oc get deployments -n nto-payment
 ```
 
 ```bash
-kubectl -n nto-payment patch deploy customer-app --type=json -p='[{"op": "replace", "path": "/spec/template/metadata/labels/service-mesh.mulesoft.com","value":"enable"}]'
+oc -n nto-payment patch deploy customer-app --type=json -p='[{"op": "replace", "path": "/spec/template/metadata/labels/service-mesh.mulesoft.com","value":"enable"}]'
 ```
 
 ```bash
-kubectl -n nto-payment patch deploy inventory-app --type=json -p='[{"op": "replace", "path": "/spec/template/metadata/labels/service-mesh.mulesoft.com","value":"enable"}]'
+oc -n nto-payment patch deploy inventory-app --type=json -p='[{"op": "replace", "path": "/spec/template/metadata/labels/service-mesh.mulesoft.com","value":"enable"}]'
 ```
 
 ```bash
-kubectl -n nto-payment patch deploy order-app --type=json -p='[{"op": "replace", "path": "/spec/template/metadata/labels/service-mesh.mulesoft.com","value":"enable"}]'
+oc -n nto-payment patch deploy order-app --type=json -p='[{"op": "replace", "path": "/spec/template/metadata/labels/service-mesh.mulesoft.com","value":"enable"}]'
 ```
 
 ```bash
-kubectl -n nto-payment patch deploy payment-app --type=json -p='[{"op": "replace", "path": "/spec/template/metadata/labels/service-mesh.mulesoft.com","value":"enable"}]'
+oc -n nto-payment patch deploy payment-app --type=json -p='[{"op": "replace", "path": "/spec/template/metadata/labels/service-mesh.mulesoft.com","value":"enable"}]'
 ```
 
 ```bash
-kubectl -n nto-payment patch deploy service-mesh-ui --type=json -p='[{"op": "replace", "path": "/spec/template/metadata/labels/service-mesh.mulesoft.com","value":"enable"}]'
+oc -n nto-payment patch deploy service-mesh-ui --type=json -p='[{"op": "replace", "path": "/spec/template/metadata/labels/service-mesh.mulesoft.com","value":"enable"}]'
 ```
 
 ```bash
-kubectl get pods -n nto-payment
+oc get pods -n nto-payment
 ```
 
 ![](images/imageXX.png)
@@ -459,7 +459,7 @@ If you are not familiar with how to get environment Client Id and Secret, naviga
 ![](images/imageXX.png)
 
 ```bash
-kubectl apply -f demo-apis.yaml
+oc apply -f demo-apis.yaml
 ```
 
 ![](images/imageXX.png)
@@ -482,7 +482,7 @@ asmctl api list
 - The last step is to bind the Kubernetes Services with the Anypoint Platform API's. To do this you will use the binding definition file **demo-bind-apis.yaml**. Execute the following command
 
 ```bash
-kubectl apply -f demo-bind-apis.yaml
+oc apply -f demo-bind-apis.yaml
 ```
 
 ![](images/imageXX.png)
@@ -627,7 +627,7 @@ asmctl api binding delete --namespace=nto-payment --name=payment-api-binding
 - Use the following command to delete the Customer, Inventory, Order, and Payment APIs created in API Manager:
 
 ```bash
-kubectl delete -f demo-apis.yaml
+oc delete -f demo-apis.yaml
 asmctl api list
 ```
 
