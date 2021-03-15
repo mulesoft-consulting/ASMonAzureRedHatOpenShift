@@ -45,7 +45,7 @@ This cookbook will walk you through the process of installing **Anypoint Service
 - The following lab requires an Enterprise Azure account.
 - Enable Anypoint Service Mesh in your Anypoint Platform Organization.
 
-For complete instructions please visit [MuleSoft Documentation](https://docs.mulesoft.com/service-mesh/1.2/)
+For complete instructions please visit [MuleSoft Documentation](https://docs.mulesoft.com/service-mesh/latest/)
 
 <a id="installaro"></a>
 ## Create Azure Red Hat OpenShift (ARO) Cluster
@@ -343,14 +343,18 @@ oc -n istio-system get cm istio -o yaml | sed -e 's/disableMixerHttpReports: tru
 
 ```bash
 mkdir -p $HOME/.asm && curl -Ls http://anypoint.mulesoft.com/servicemesh/xapi/v1/install > $HOME/.asm/asmctl && chmod +x $HOME/.asm/asmctl && export PATH=$PATH:$HOME/.asm
+
+asmctl version
 ```
 
+![](images/image-asmctl.png)
+
 - Now we are ready to install Anypoint Service Mesh. To do this we will call **asmctl install**. This command requires 3 parameters
-    - Client Id
-    - Client Secret
+    - Client Id from API Manager (Environment or Business Group)
+    - Client Secret from API Manager (Environment or Business Group)
     - Service Mesh license
 
-- If you are not familiar with how to get environment Client Id and Secret, navigate to **API Manager** and click on the **Environment Information** button.
+- If you are not familiar with how to get Client Id and Client Secret, navigate to **API Manager** and click on the **Environment Information** button.
 
 ![](images/image-env-info1.png)
 
