@@ -381,7 +381,9 @@ oc get pods -n service-mesh
 
 - To deploy the ASM Adapter we will be using a Kubernetes custom resource definition (CRD). In the **ServiceMeshDemo** repository we have create the file **nto-payment-asm-adapter.yaml** that can modified.
 
-    ![](images/imageXX.png)
+    ![](images/image30a.png)
+
+    ![](images/image30b.png)
 
 - Replace **```<CLIENT ID>```** and **```<CLIENT SECRET>```** with values for your environment. Save file and run the following command
 
@@ -389,7 +391,7 @@ oc get pods -n service-mesh
 oc apply -f nto-payment-asm-adapter.yaml
 ```
 
-![](images/imageXX.png)
+![](images/image31.png)
 
 - Use the following command to monitor the progress. Wait for status to change to **Ready**
 
@@ -397,7 +399,7 @@ oc apply -f nto-payment-asm-adapter.yaml
 asmctl adapter list
 ```
 
-![](images/imageXX.png)
+![](images/image32.png)
 
 - After you provision the adapter, you must set the `istio-injection=enabled` label on the namespace by runnning the following command
 
@@ -435,14 +437,14 @@ oc -n nto-payment patch deploy service-mesh-ui --type=json -p='[{"op": "replace"
 oc get pods -n nto-payment
 ```
 
-![](images/imageXX.png)
+![](images/image33.png)
 - Verify the Envoy sidecar is injected within each pod in the Kubernetes Cluster by running the following command
 
 ```bash
 asmctl management check sidecar --namespace=nto-payment
 ```
 
-![](images/imageXX.png)
+![](images/image34.png)
 
 <a id="step14"></a>
 ### **STEP 14**: Create APIs
@@ -451,28 +453,32 @@ asmctl management check sidecar --namespace=nto-payment
 
 - Before creating the APIs, ensure the Anypoint Platform user has **API Manager Environment Administrator** permission, in addition to **Manage APIs Configuration**. This can be done by your organization admin in **Access Management*.
 
-![](images/imageXX.png)
+![](images/image-service-user-permissions.png)
  
 
 - Modify the Kubernetes custom resource definition (CRD) file **demo-apis.yaml**. 
 
-- For each API, replace **```<ENV ID>```**, **```<USER>```** and **```<PASSWORD>```** with the values for your environment.
+- For each API, replace **```<ENV ID>```** with the values for your environment.
 
-If you are not familiar with how to get environment Client Id and Secret, navigate to **API Manager** and click on the **Environment Information** button.
+- If you are not familiar with how to get Environment Id, navigate to **API Manager** and click on the **Environment Information** button.
 
-![](images/imageXX.png)
+- You'll need to [Configure Connected Apps](https://docs.mulesoft.com/service-mesh/latest/obtain-connected-apps-credentials) to get the client credentials into your CRD file.
 
-![](images/imageXX.png)
+![](images/image-connectedApp.png)
+
+- For each API, replace **```<clientId>```** and **```<clientSecret>```** with the values from the connected app configured. Keep in mind that these are not the same as the ones from either the environment or business group in API Manager.
 
 **NOTE:** If you run this multiple times you might need to change the version number in **demo-apis.yaml**, since Anypoint Platform will keep it around for 7 days.
 
-![](images/imageXX.png)
+![](images/image35a.png)
+
+![](images/image35b.png)
 
 ```bash
 oc apply -f demo-apis.yaml
 ```
 
-![](images/imageXX.png)
+![](images/image36.png)
 
 - Use the following command to monitor the progress. Wait for status to change to **Ready**
 
@@ -609,7 +615,9 @@ Follow [MuleSoft API Analytics Documentation](https://docs.mulesoft.com/api-mana
 ## Cleanup (Optional)
 
 <a id="step20"></a>
-### **STEP 20**: Cleanup APIs and API Bindings
+### **STEP 20**: Cleanup APIs, API Bindings, and ASM Adapter
+
+Sometimes you may want to clean up what you've created and reuse the cluster for the same or other services or other Anypoint Platform orgs. This optional step includes some cleanup commands that may be useful.
 
 - Use the following command to list the API Bindings:
 
@@ -650,3 +658,9 @@ asmctl api list
 - Remove any stale APIs from Exchange on Anypoint Platform.
 
 ![](images/image-exchange-api-cleanup.png)
+
+- Remove the adapter if necessary
+
+```bash
+asmctl adapter delete --namespace=nto-payment --name=nto-payment-service-mesh-adapter
+```
