@@ -364,7 +364,7 @@ asmctl version
 asmctl install
 ```
 
-![](images/imageXX.png)
+![](images/image28.png)
 
 - Verify that Anypoint Service Mesh has been installed correctly with the following command
 
@@ -617,7 +617,7 @@ Follow [MuleSoft API Analytics Documentation](https://docs.mulesoft.com/api-mana
 <a id="step20"></a>
 ### **STEP 20**: Cleanup APIs, API Bindings, and ASM Adapter
 
-Sometimes you may want to clean up what you've created and reuse the cluster for the same or other services or other Anypoint Platform orgs. This optional step includes some cleanup commands that may be useful.
+Sometimes you may want to clean up what you've created and re-purpose the cluster for the same or other services or other Anypoint Platform orgs or prep for uninstalling Service Mesh. This optional step includes some cleanup commands that may be useful.
 
 - Use the following command to list the API Bindings:
 
@@ -659,8 +659,65 @@ asmctl api list
 
 ![](images/image-exchange-api-cleanup.png)
 
-- Remove the adapter if necessary
+- Delete the adapter if necessary
 
 ```bash
 asmctl adapter delete --namespace=nto-payment --name=nto-payment-service-mesh-adapter
+```
+- Disable the Istio injection if necessary
+
+```bash
+oc label ns nto-payment istio-injection=disable --overwirte=true
+```
+
+- Remove the Istio injection label on the namespaces with provisioned applications.
+
+```bash
+oc delete mutatingwebhookconfiguration istio-sidecar-injector
+```
+
+```bash
+oc get namespace -L istio-injection
+```
+
+- Redeploy your applications with Service Mesh disabled.
+
+```bash
+oc get deployments -n nto-payment
+```
+
+```bash
+oc -n nto-payment patch deploy customer-app --type=json -p='[{"op": "replace", "path": "/spec/template/metadata/labels/service-mesh.mulesoft.com","value":"disable"}]'
+```
+
+```bash
+oc -n nto-payment patch deploy inventory-app --type=json -p='[{"op": "replace", "path": "/spec/template/metadata/labels/service-mesh.mulesoft.com","value":"disable"}]'
+```
+
+```bash
+oc -n nto-payment patch deploy order-app --type=json -p='[{"op": "replace", "path": "/spec/template/metadata/labels/service-mesh.mulesoft.com","value":"disable"}]'
+```
+
+```bash
+oc -n nto-payment patch deploy payment-app --type=json -p='[{"op": "replace", "path": "/spec/template/metadata/labels/service-mesh.mulesoft.com","value":"disable"}]'
+```
+
+```bash
+oc -n nto-payment patch deploy service-mesh-ui --type=json -p='[{"op": "replace", "path": "/spec/template/metadata/labels/service-mesh.mulesoft.com","value":"disable"}]'
+```
+
+```bash
+oc get pods -n nto-payment
+```
+
+- Verify the Envoy sidecar is no longer injected within each pod in the Kubernetes Cluster by running the following command
+
+```bash
+asmctl management check sidecar --namespace=nto-payment
+```
+
+- Uninstall Anypoint Service Mesh
+
+```bash
+asmctl uninstall && rm asmctl
 ```
