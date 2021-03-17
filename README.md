@@ -34,11 +34,10 @@ This cookbook will walk you through the process of installing **Anypoint Service
 - **[Apply API Management Policies](#applypolicy)**
 	- [**STEP 16:** Apply Rate Limiting Policy to Customer API](#step16)
 	- [**STEP 17:** Apply Client ID enforcement Policy to Payment API](#step17)
-- **[Report & Monitor API Analytics](#reportmonitoranalytics)**
-	- [**STEP 18:** View Analytics of Customer API & Payment API](#step18)
-	- [**STEP 19:** View Dashboards of Customer API & Payment API](#step19)
+- **[Monitor APIs](#reportmonitoranalytics)**
+	- [**STEP 18:** View Dashboards of Customer API & Payment API](#step18)
 - **[Cleanup (Optional)](#cleanup)**
-	- [**STEP 20:** Cleanup APIs & Bindings](#step20)
+	- [**STEP 19:** Cleanup APIs & Bindings](#step19)
 
 ## Required Artifacts
 
@@ -569,31 +568,9 @@ asmctl api binding list
 
 
 <a id="reportmonitoranalytics"></a>
-## Report & Monitor API Analytics
-
+## Monitor APIs
 <a id="step18"></a>
-### **STEP 18**: View Analytics Reports Dashboards of Customer API & Payment API
-
-- From **API Manager**, click on **Analytics** on the left.
-
-![](images/imageXX.png)
-
-- At the top, select the desired date range, filter by the APIs, and check **Include Policy Violations**
-
-![](images/imageXX.png)
-
-- You can also build a report for API Analytics collected from service-service communication. The API Analytics provides insights into health of managed APIs - status code, policy violations, response time and such.  
-Follow [MuleSoft API Analytics Documentation](https://docs.mulesoft.com/api-manager/2.x/analytics-event-api#creating-a-report) to create an API Analytics report for all APIs and review if APIs are working as expected.
-
-![](images/imageXX.png)
-
-- Click on **Run** of the report, you could download the report in the browser or view the report usring curl with the report URL to look at more details.
-
-![](images/imageXX.png)
-[Violated Policy Name.csv](Violated%20Policy%20Name.csv)
-
-<a id="step19"></a>
-### **STEP 19**: View Dashboards of Customer API & Payment API
+### **STEP 18**: View Dashboards of Customer API & Payment API
 - Navigate to the **Anypoint Monitoring** from either Anypoint Platform home page, or the hamburger menu at the top left corner.
 
 - You can click on **Built-in dashboards** on the left to check out what's populated for the Customer & Payment APIs. In the drop-down, choose the **environment**, **resource name**, and the **API version / Instance**, and click on **View**. 
@@ -614,8 +591,8 @@ Follow [MuleSoft API Analytics Documentation](https://docs.mulesoft.com/api-mana
 <a id="cleanup"></a>
 ## Cleanup (Optional)
 
-<a id="step20"></a>
-### **STEP 20**: Cleanup APIs, API Bindings, and ASM Adapter
+<a id="step19"></a>
+### **STEP 19**: Cleanup APIs, API Bindings, and ASM Adapter
 
 Sometimes you may want to clean up what you've created and re-purpose the cluster for the same or other services or other Anypoint Platform orgs or prep for uninstalling Service Mesh. This optional step includes some cleanup commands that may be useful.
 
