@@ -36,8 +36,8 @@ This cookbook will walk you through the process of installing **Anypoint Service
 	- [**STEP 17:** Apply Client ID enforcement Policy to Payment API](#step17)
 - **[Monitor APIs](#reportmonitoranalytics)**
 	- [**STEP 18:** View Dashboards of Customer API & Payment API](#step18)
-- **[Cleanup (Optional)](#cleanup)**
-	- [**STEP 19:** Cleanup APIs & Bindings](#step19)
+- **[Cleanup / Uninstall (Optional)](#cleanup-uninstall)**
+	- [**STEP 19:** Cleanup APIs, Bindings, ASM Adapter / Uninstall ASM](#step19)
 
 ## Required Artifacts
 
@@ -588,13 +588,13 @@ asmctl api binding list
 
 **CONGRATULATIONS!!!** You have completed installing Anypoint Service Mesh, applying policies to kubernetes services, reporting and monitoring the analytics of these non-Mule services via Anypoint Platform.
 
-<a id="cleanup"></a>
-## Cleanup (Optional)
+<a id="cleanup-uninstall"></a>
+## Cleanup / Uninstall (Optional)
 
 <a id="step19"></a>
-### **STEP 19**: Cleanup APIs, API Bindings, and ASM Adapter
+### **STEP 19**: Cleanup APIs, Bindings, ASM Adapter / Uninstall ASM
 
-Sometimes you may want to clean up what you've created and re-purpose the cluster for the same or other services or other Anypoint Platform orgs or prep for uninstalling Service Mesh. This optional step includes some cleanup commands that may be useful.
+Sometimes you may want to clean up what you've created and re-purpose the cluster for the same / other services or other Anypoint Platform orgs, or prep for [uninstalling Service Mesh](https://docs.mulesoft.com/service-mesh/latest/uninstall-service-mesh). This optional step includes some cleanup commands that may be useful.
 
 - Use the following command to list the API Bindings:
 
@@ -603,6 +603,13 @@ asmctl api binding list
 ```
 
 - Use the following commands to delete the API Bindings for the Customer, Inventory, Order, and Payment APIs in the nto-payment namespace:
+
+```bash
+oc delete -f demo-bind-apis.yaml
+```
+
+- Alternatively, you could delete each one by one using asmctl:
+
 ```bash
 asmctl api binding delete --namespace=nto-payment --name=customer-api-binding
 ```
@@ -619,14 +626,20 @@ asmctl api binding delete --namespace=nto-payment --name=order-api-binding
 asmctl api binding delete --namespace=nto-payment --name=payment-api-binding
 ```
 
+- Use the following command to list the APIs:
+
+```bash
+asmctl api list
+```
+
+
 - Use the following command to delete the Customer, Inventory, Order, and Payment APIs created in API Manager:
 
 ```bash
 oc delete -f demo-apis.yaml
-asmctl api list
 ```
 
-![](images/image-api-binding-cleanup.png)
+![](images/image-api-binding-cleanup-XX.png)
 
 - Remove any stale APIs from API Manager on Anypoint Platform.
 
@@ -641,6 +654,7 @@ asmctl api list
 ```bash
 asmctl adapter delete --namespace=nto-payment --name=nto-payment-service-mesh-adapter
 ```
+
 - Disable the Istio injection if necessary
 
 ```bash
