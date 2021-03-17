@@ -3,7 +3,7 @@
 
 ## Introduction
 
-Official **OpenShift** support has been added to **Anypoint Service Mesh v1.2**!
+Official **OpenShift** support has been added to **Anypoint Service Mesh v1.2.0**!
 
 This cookbook will walk you through the process of installing **Anypoint Service Mesh** on **Microsoft Azure Red Hat OpenShift**. You will deploy a demo application and secure using Anypoint Service Mesh.
 
