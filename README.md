@@ -1,4 +1,4 @@
-# ASMonAzureRedHatOpenShift [WIP]
+# ASMonAzureRedHatOpenShift
 ![](images/title.png)
 
 ## Introduction
@@ -461,7 +461,7 @@ asmctl management check sidecar --namespace=nto-payment
 
 - If you are not familiar with how to get Environment Id, navigate to **API Manager** and click on the **Environment Information** button.
 
-- You'll need to [Configure Connected Apps](https://docs.mulesoft.com/service-mesh/latest/obtain-connected-apps-credentials) to get the client credentials into your CRD file.
+- You'll need to [Configure Connected Apps](https://docs.mulesoft.com/service-mesh/latest/obtain-connected-apps-credentials) to get the client credentials into your CRD file. This requires Org Adminstrator role.
 
 ![](images/image-connectedApp.png)
 
@@ -485,11 +485,11 @@ oc apply -f demo-apis.yaml
 asmctl api list
 ```
 
-![](images/imageXX.png)
+![](images/image37.png)
 
 - You can also verify that the API's have been created in Anypoint Platform. Go to Anypoint Platform and navigate to **API Manager**
 
-    ![](images/imageXX.png)
+    ![](images/image38.png)
 
 <a id="step15"></a>
 ### **STEP 15**: Binding APIs with Services
@@ -500,7 +500,7 @@ asmctl api list
 oc apply -f demo-bind-apis.yaml
 ```
 
-![](images/imageXX.png)
+![](images/image39.png)
 
 
 - Use the following command to monitor the progress. Wait for status to change to **Ready**
@@ -509,11 +509,11 @@ oc apply -f demo-bind-apis.yaml
 asmctl api binding list
 ```
 
-![](images/imageXX.png)
+![](images/image40.png)
 
 - If you go to **API Management** in Anypoint Platform and refresh the page you will see that the API's are now **Active**. 
 
-![](images/imageXX.png)
+![](images/image41.png)
 
 - You have completed the installation of Anypoint Service Mesh. In the next section we will walk through applying some policies against the kubernetes services.
 
@@ -525,23 +525,23 @@ asmctl api binding list
 
 - From the **API Management** Screen in Anypoint Platform click on the version number for **customer-api**
 
-    ![](images/imageXX.png)
+    ![](images/image42.png)
 
 - Click **Policies** and then click **Apply New Policy**. Expand **Rate Limiting** select newest version and click **Configure Policy**. 
 
-    ![](images/imageXX.png)
+    ![](images/image43.png)
 
 - We will configure the rate limit to be 1 call per minute. Click **Apply**
 
-    ![](images/imageXX.png)
+    ![](images/image44.png)
 
 - You should now see your new **Rate limiting** policy.
 
-	 ![](images/imageXX.png)
+	 ![](images/image45.png)
 
 - To test this out run through the order process in the demo application. Try to run through it 2 times within a minute. The second time through you will get **Account Retrieval Failed** error.
 
-    ![](images/imageXX.png)
+    ![](images/image46.png)
 
 - Before moving onto the next step remove the **Rate Limiting** policy.
 
@@ -552,19 +552,19 @@ asmctl api binding list
 
 - Click **Policies** and then click **Apply New Policy**. Expand **Client ID enforcement** select newest version and click **Configure Policy**. 
 
-    ![](images/imageXX.png)
+    ![](images/image47.png)
 
 - Leave all defaults and click **APPLY**
 
-	 ![](images/imageXX.png)
+	 ![](images/image48.png)
 
 - You should now see your new **Client ID enforcement** policy.
 
-	 ![](images/imageXX.png)
+	 ![](images/image49.png)
 
 - Once again run through the demo application but this time you should see **Payment Authorization Failed** when you click **AUTHORIZE PAYMENT**
 
-    ![](images/imageXX.png)
+    ![](images/image50.png)
 
 
 <a id="reportmonitoranalytics"></a>
@@ -575,15 +575,15 @@ asmctl api binding list
 
 - You can click on **Built-in dashboards** on the left to check out what's populated for the Customer & Payment APIs. In the drop-down, choose the **environment**, **resource name**, and the **API version / Instance**, and click on **View**. 
 
-![](images/imageXX.png)
+![](images/image51.png)
 
 - At the top right corner of the dashboard, adjust the time period and turn on Auto-Refresh for **Customer API**. 
 
-![](images/imageXX.png)
+![](images/image52.png)
 
 - Repeat the above and choose **Payment API** this time and check out its Analytics as well. 
 
-![](images/imageXX.png)
+![](images/image53.png)
 
 
 **CONGRATULATIONS!!!** You have completed installing Anypoint Service Mesh, applying policies to kubernetes services, reporting and monitoring the analytics of these non-Mule services via Anypoint Platform.
