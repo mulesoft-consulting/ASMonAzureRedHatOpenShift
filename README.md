@@ -661,17 +661,11 @@ asmctl adapter delete --namespace=nto-payment --name=nto-payment-service-mesh-ad
 oc label ns nto-payment istio-injection=disable --overwirte=true
 ```
 
-- Remove the Istio injection label on the namespaces with provisioned applications.
-
-```bash
-oc delete mutatingwebhookconfiguration istio-sidecar-injector
-```
-
 ```bash
 oc get namespace -L istio-injection
 ```
 
-- Redeploy your applications with Service Mesh disabled.
+- Redeploy your applications with some changes. Below are just examples of redeployment.
 
 ```bash
 oc get deployments -n nto-payment
